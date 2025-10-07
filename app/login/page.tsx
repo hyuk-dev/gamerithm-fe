@@ -1,21 +1,17 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import Link from "next/link"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function SteamLoginPage() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSteamLogin = () => {
-    setIsLoading(true)
-    // Simulate Steam OAuth redirect
-    // In production, this would redirect to: https://steamcommunity.com/openid/login
-    setTimeout(() => {
-      window.location.href = "/dashboard"
-    }, 1500)
-  }
+    setIsLoading(true);
+    window.location.href = "/api/auth/steam/start";
+  };
 
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white flex items-center justify-center px-4">
@@ -43,7 +39,8 @@ export default function SteamLoginPage() {
             <div className="text-center space-y-2">
               <h2 className="text-2xl font-bold">Sign in to Continue</h2>
               <p className="text-gray-400 text-sm">
-                Connect your Steam account to get personalized game recommendations
+                Connect your Steam account to get personalized game
+                recommendations
               </p>
             </div>
 
@@ -56,8 +53,19 @@ export default function SteamLoginPage() {
             >
               {isLoading ? (
                 <>
-                  <svg className="w-6 h-6 mr-3 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <svg
+                    className="w-6 h-6 mr-3 animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
                     <path
                       className="opacity-75"
                       fill="currentColor"
@@ -68,7 +76,11 @@ export default function SteamLoginPage() {
                 </>
               ) : (
                 <>
-                  <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor">
+                  <svg
+                    className="w-6 h-6 mr-3"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
                     <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 1.5a8.5 8.5 0 0 1 8.5 8.5 8.5 8.5 0 0 1-8.5 8.5A8.5 8.5 0 0 1 3.5 12 8.5 8.5 0 0 1 12 3.5zm-1.5 3v1.793L7.707 11.086a2 2 0 0 0-1.414.586l-1.5 1.5a2 2 0 0 0 0 2.828 2 2 0 0 0 2.828 0l1.5-1.5a2 2 0 0 0 .586-1.414L12.5 10.293V6.5h-2z" />
                   </svg>
                   Sign in with Steam
@@ -93,8 +105,12 @@ export default function SteamLoginPage() {
                   />
                 </svg>
                 <div>
-                  <p className="font-medium text-gray-300">Secure OAuth Authentication</p>
-                  <p className="text-gray-500">We never see or store your Steam password</p>
+                  <p className="font-medium text-gray-300">
+                    Secure OAuth Authentication
+                  </p>
+                  <p className="text-gray-500">
+                    We never see or store your Steam password
+                  </p>
                 </div>
               </div>
 
@@ -114,14 +130,19 @@ export default function SteamLoginPage() {
                 </svg>
                 <div>
                   <p className="font-medium text-gray-300">Privacy Protected</p>
-                  <p className="text-gray-500">We only access your public game library</p>
+                  <p className="text-gray-500">
+                    We only access your public game library
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* Back to Home */}
             <div className="text-center pt-4">
-              <Link href="/" className="text-sm text-gray-400 hover:text-purple-400 transition-colors">
+              <Link
+                href="/"
+                className="text-sm text-gray-400 hover:text-purple-400 transition-colors"
+              >
                 ← Back to Home
               </Link>
             </div>
@@ -141,5 +162,5 @@ export default function SteamLoginPage() {
         </p>
       </div>
     </div>
-  )
+  );
 }
