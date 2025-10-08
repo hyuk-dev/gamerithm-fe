@@ -1,19 +1,29 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Navigation } from "@/components/navigation"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import Link from "next/link"
+import { useState } from "react";
+import { Navigation } from "@/components/navigation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Link from "next/link";
 
 const mockPosts = [
   {
     id: 1,
-    author: { name: "Alex Chen", avatar: "/diverse-user-avatars.png", username: "alexchen" },
+    author: {
+      name: "Alex Chen",
+      avatar: "/default-avatar.svg",
+      username: "alexchen",
+    },
     category: "Game Recommendation",
     title: "Just finished Baldur's Gate 3 - Absolutely Mind-Blowing!",
     preview:
@@ -26,7 +36,11 @@ const mockPosts = [
   },
   {
     id: 2,
-    author: { name: "Sarah Kim", avatar: "/diverse-gaming-avatars.png", username: "sarahk" },
+    author: {
+      name: "Sarah Kim",
+      avatar: "/default-avatar.svg",
+      username: "sarahk",
+    },
     category: "Looking for Players",
     title: "LF2M for Valorant Ranked - Plat+ Only",
     preview:
@@ -39,7 +53,11 @@ const mockPosts = [
   },
   {
     id: 3,
-    author: { name: "Mike Torres", avatar: "/diverse-user-avatars.png", username: "miket" },
+    author: {
+      name: "Mike Torres",
+      avatar: "/default-avatar.svg",
+      username: "miket",
+    },
     category: "Strategy & Tips",
     title: "Elden Ring Boss Guide: How I Beat Malenia in 3 Tries",
     preview:
@@ -50,7 +68,7 @@ const mockPosts = [
     tags: ["RPG", "Action", "Guide"],
     thumbnail: "/elden-ring-knight.png",
   },
-]
+];
 
 const trendingTopics = [
   { tag: "Baldur's Gate 3", count: 234 },
@@ -58,16 +76,24 @@ const trendingTopics = [
   { tag: "Valorant", count: 156 },
   { tag: "Cyberpunk 2077", count: 142 },
   { tag: "Counter-Strike 2", count: 128 },
-]
+];
 
 const activeUsers = [
-  { name: "Alex Chen", avatar: "/diverse-user-avatars.png", badge: "Most Helpful" },
-  { name: "Sarah Kim", avatar: "/diverse-gaming-avatars.png", badge: "Top Contributor" },
-  { name: "Mike Torres", avatar: "/diverse-user-avatars.png", badge: "Community Star" },
-]
+  { name: "Alex Chen", avatar: "/default-avatar.svg", badge: "Most Helpful" },
+  {
+    name: "Sarah Kim",
+    avatar: "/default-avatar.svg",
+    badge: "Top Contributor",
+  },
+  {
+    name: "Mike Torres",
+    avatar: "/default-avatar.svg",
+    badge: "Community Star",
+  },
+];
 
 export default function CommunityPage() {
-  const [sortBy, setSortBy] = useState("hot")
+  const [sortBy, setSortBy] = useState("hot");
 
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white">
@@ -80,7 +106,9 @@ export default function CommunityPage() {
             <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 mb-2">
               Gamerithm Community
             </h1>
-            <p className="text-gray-400 text-lg">Connect with gamers, share recommendations, discuss games</p>
+            <p className="text-gray-400 text-lg">
+              Connect with gamers, share recommendations, discuss games
+            </p>
           </div>
         </div>
 
@@ -103,7 +131,11 @@ export default function CommunityPage() {
                   </TabsList>
 
                   <div className="flex items-center gap-3 w-full sm:w-auto">
-                    <Select value={sortBy} onValueChange={setSortBy} modal={false}>
+                    <Select
+                      value={sortBy}
+                      onValueChange={setSortBy}
+                      modal={false}
+                    >
                       <SelectTrigger className="bg-[#1a1a2e] border-gray-700 cursor-pointer w-full sm:w-[180px]">
                         <SelectValue />
                       </SelectTrigger>
@@ -114,7 +146,10 @@ export default function CommunityPage() {
                         <SelectItem value="new" className="cursor-pointer">
                           ✨ New
                         </SelectItem>
-                        <SelectItem value="top-today" className="cursor-pointer">
+                        <SelectItem
+                          value="top-today"
+                          className="cursor-pointer"
+                        >
                           📈 Top Today
                         </SelectItem>
                         <SelectItem value="top-week" className="cursor-pointer">
@@ -125,8 +160,18 @@ export default function CommunityPage() {
 
                     <Link href="/community/new" className="w-full sm:w-auto">
                       <Button className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 cursor-pointer hover:scale-105 transition-all">
-                        <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        <svg
+                          className="w-5 h-5 mr-2"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 4v16m8-8H4"
+                          />
                         </svg>
                         Create Post
                       </Button>
@@ -145,12 +190,12 @@ export default function CommunityPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function PostCard({ post }: { post: (typeof mockPosts)[0] }) {
-  const [upvoted, setUpvoted] = useState(false)
-  const [bookmarked, setBookmarked] = useState(false)
+  const [upvoted, setUpvoted] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
 
   return (
     <Link href={`/community/${post.id}`}>
@@ -160,7 +205,7 @@ function PostCard({ post }: { post: (typeof mockPosts)[0] }) {
           {post.thumbnail && (
             <div className="hidden sm:block w-32 h-32 rounded-lg overflow-hidden flex-shrink-0">
               <img
-                src={post.thumbnail || "/placeholder.svg"}
+                src={post.thumbnail || "/default-game-cover.svg"}
                 alt={post.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               />
@@ -175,10 +220,15 @@ function PostCard({ post }: { post: (typeof mockPosts)[0] }) {
                 className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
               >
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
+                  <AvatarImage
+                    src={post.author.avatar || "/default-avatar.svg"}
+                    alt={post.author.name}
+                  />
                   <AvatarFallback>{post.author.name[0]}</AvatarFallback>
                 </Avatar>
-                <span className="text-sm font-medium text-white">{post.author.name}</span>
+                <span className="text-sm font-medium text-white">
+                  {post.author.name}
+                </span>
               </Link>
               <span className="text-xs text-gray-500">•</span>
               <span className="text-xs text-gray-500">{post.timestamp}</span>
@@ -189,7 +239,9 @@ function PostCard({ post }: { post: (typeof mockPosts)[0] }) {
               <h3 className="text-lg font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">
                 {post.title}
               </h3>
-              <p className="text-sm text-gray-400 line-clamp-2">{post.preview}</p>
+              <p className="text-sm text-gray-400 line-clamp-2">
+                {post.preview}
+              </p>
             </div>
 
             {/* Tags */}
@@ -209,12 +261,14 @@ function PostCard({ post }: { post: (typeof mockPosts)[0] }) {
             <div className="flex items-center gap-4 pt-2">
               <button
                 onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  setUpvoted(!upvoted)
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setUpvoted(!upvoted);
                 }}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all cursor-pointer hover:scale-105 ${
-                  upvoted ? "bg-purple-900/30 text-purple-400" : "bg-[#0f0f23] text-gray-400 hover:bg-purple-900/20"
+                  upvoted
+                    ? "bg-purple-900/30 text-purple-400"
+                    : "bg-[#0f0f23] text-gray-400 hover:bg-purple-900/20"
                 }`}
               >
                 <svg
@@ -223,19 +277,31 @@ function PostCard({ post }: { post: (typeof mockPosts)[0] }) {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 15l7-7 7 7"
+                  />
                 </svg>
-                <span className="text-sm font-medium">{post.upvotes + (upvoted ? 1 : 0)}</span>
+                <span className="text-sm font-medium">
+                  {post.upvotes + (upvoted ? 1 : 0)}
+                </span>
               </button>
 
               <button
                 onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
+                  e.preventDefault();
+                  e.stopPropagation();
                 }}
                 className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0f0f23] text-gray-400 hover:bg-cyan-900/20 hover:text-cyan-400 transition-all cursor-pointer hover:scale-105"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -248,12 +314,14 @@ function PostCard({ post }: { post: (typeof mockPosts)[0] }) {
 
               <button
                 onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  setBookmarked(!bookmarked)
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setBookmarked(!bookmarked);
                 }}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all cursor-pointer hover:scale-105 ${
-                  bookmarked ? "bg-cyan-900/30 text-cyan-400" : "bg-[#0f0f23] text-gray-400 hover:bg-cyan-900/20"
+                  bookmarked
+                    ? "bg-cyan-900/30 text-cyan-400"
+                    : "bg-[#0f0f23] text-gray-400 hover:bg-cyan-900/20"
                 }`}
               >
                 <svg
@@ -273,12 +341,17 @@ function PostCard({ post }: { post: (typeof mockPosts)[0] }) {
 
               <button
                 onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
+                  e.preventDefault();
+                  e.stopPropagation();
                 }}
                 className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0f0f23] text-gray-400 hover:bg-purple-900/20 hover:text-purple-400 transition-all cursor-pointer hover:scale-105"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -293,5 +366,5 @@ function PostCard({ post }: { post: (typeof mockPosts)[0] }) {
         </div>
       </Card>
     </Link>
-  )
+  );
 }

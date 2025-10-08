@@ -31,7 +31,7 @@ export function UserDropdown() {
         >
           <Avatar className="h-10 w-10">
             <AvatarImage
-              src={profile?.avatar || "/diverse-user-avatars.png"}
+              src={profile?.avatar || "/default-avatar.svg"}
               alt={profile?.name || "User"}
             />
             <AvatarFallback className="bg-gradient-to-br from-purple-500 to-cyan-500 text-white">
@@ -55,7 +55,7 @@ export function UserDropdown() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-white/10" />
-        <Link href={`/profile/${profile?.username || "me"}`}>
+        <Link href={`/profile`}>
           <DropdownMenuItem className="focus:bg-white/10 focus:text-white cursor-pointer">
             <svg
               className="w-4 h-4 mr-2"

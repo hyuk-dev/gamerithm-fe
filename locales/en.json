@@ -1,0 +1,248 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "view": "View",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "welcome": "Welcome",
+    "hello": "Hello",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "recommendations": "Recommendations",
+    "community": "Community",
+    "profile": "Profile",
+    "settings": "Settings",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "language": "Language",
+    "english": "English",
+    "korean": "한국어"
+  },
+  "dashboard": {
+    "title": "Your Library",
+    "stats": {
+      "totalGames": "Total Games",
+      "totalPlaytime": "Total Playtime",
+      "mostPlayedGenre": "Most Played Genre"
+    },
+    "filters": {
+      "genre": "Genre",
+      "playtime": "Playtime",
+      "recentlyPlayed": "Recently Played",
+      "showOnlyRecent": "Show only recent",
+      "libraryFilters": "Library Filters"
+    },
+    "gameCard": {
+      "hoursPlayed": "hours played",
+      "lastPlayed": "Last played"
+    },
+    "emptyState": {
+      "notLoggedIn": {
+        "title": "Please log in to view your game library",
+        "description": "Connect your Steam account to see your games and get personalized recommendations",
+        "button": "Login with Steam"
+      },
+      "error": {
+        "title": "Failed to load your games",
+        "description": "There was an error loading your Steam library. Please try again.",
+        "button": "Try Again"
+      },
+      "noGames": {
+        "title": "No games found",
+        "description": "We couldn't find any games in your library matching the current filters.",
+        "button": "Reset Filters"
+      }
+    },
+    "comments": {
+      "genreFiltering": "Genre filtering - normalize Korean genres to English for comparison",
+      "sidebarDesktop": "Sidebar - Desktop: fixed left, Mobile: toggle drawer",
+      "mostPlayedGenreExclude": "Calculate most played genre (excluding Unknown)",
+      "excludeUnknownGenre": "Exclude Unknown genre from calculation",
+      "fallbackCoverImage": "Fallback cover image mapping (client-side)",
+      "customImageComponent": "Custom image component",
+      "highQualityImagePriority": "High quality image priority list",
+      "highestQuality": "Highest quality",
+      "mediumResolution": "Medium resolution",
+      "errorPrevention": "Already in error state, prevent duplicate processing",
+      "originalCoverImage": "Starting from original coverImage",
+      "highQualitySequence": "Try next image from high quality sequence",
+      "allHighQualityFailed": "All high quality images failed, fallback to Steam icon",
+      "steamIconFailed": "Steam icon failed, fallback to local",
+      "finalFallback": "Final fallback",
+      "currentImageIcon": "Check if current image is icon",
+      "mountHighQuality": "Try high quality images from component mount",
+      "steamStoreUrl": "Open Steam Store URL in new tab",
+      "mainGenresOnly": "Display only major genres, exclude Unknown or overly specific genres"
+    }
+  },
+  "recommendations": {
+    "title": "AI Game Recommendations",
+    "subtitle": "Tell us what you're looking for and get personalized game recommendations",
+    "prompt": {
+      "label": "What kind of games are you looking for?",
+      "placeholder": "e.g., I like RPG games and recently enjoyed Baldur's Gate 3. Can you recommend similar games?",
+      "generateButton": "Generate Recommendations",
+      "generating": "Generating... (About 2 minutes)"
+    },
+    "filters": {
+      "title": "Filters",
+      "sortBy": "Sort By",
+      "matchScore": "Match Score",
+      "price": "Price",
+      "releaseDate": "Release Date",
+      "priceRange": "Price Range",
+      "playerMode": "Player Mode",
+      "allGames": "All Games",
+      "multiplayerOnly": "Multiplayer Only",
+      "singleplayerOnly": "Single-player Only",
+      "genre": "Genre"
+    },
+    "gameCard": {
+      "match": "Match",
+      "youllLoveThis": "You'll love this because:",
+      "multiplayer": "Multiplayer",
+      "viewOnSteam": "View on Steam",
+      "saveToWishlist": "Save to Wishlist",
+      "wishlisted": "Wishlisted",
+      "whyThisGame": "Why This Game?",
+      "similarGames": "Similar Games You Played:",
+      "matchingMechanics": "Matching Mechanics:",
+      "toneAnalysis": "Tone Analysis:"
+    },
+    "emptyState": {
+      "readyToDiscover": "Ready to discover your next favorite game?",
+      "enterPreferences": "Enter your preferences above and click \"Generate Recommendations\" to get started",
+      "noGamesMatch": "No games match your filters",
+      "adjustFilters": "Try adjusting your filters to see more recommendations",
+      "resetFilters": "Reset Filters"
+    },
+    "messages": {
+      "apiError": "API Error",
+      "apiResponseData": "API Response Data",
+      "processedRecommendations": "Processed recommendation data",
+      "finalRecommendations": "Final recommendation data",
+      "recommendationsGenerated": "Recommendations generated!",
+      "gamesRecommended": "games recommended for you",
+      "generationError": "Error generating recommendations",
+      "errorOccurred": "An error occurred during recommendation generation",
+      "defaultRecommendations": "Displaying default recommended games. Please try again later.",
+      "gameImageMapping": "Game title image mapping",
+      "actualImageUrl": "Use actual image URL from API if available",
+      "gameImageMappingLocal": "Game title image mapping (local images and Steam CDN URLs included)",
+      "popularGames": "Popular games - local images",
+      "steamCdnImages": "Steam CDN images (more game coverage)",
+      "partialMatching": "Find image with partial matching",
+      "defaultImage": "Return default image"
+    }
+  },
+  "community": {
+    "title": "Community",
+    "newPost": "New Post",
+    "posts": "Posts",
+    "replies": "Replies",
+    "likes": "Likes"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "steamProfile": "Steam Profile",
+    "gameLibrary": "Game Library",
+    "achievements": "Achievements"
+  },
+  "auth": {
+    "loginWithSteam": "Login with Steam",
+    "logout": "Logout",
+    "welcome": "Welcome",
+    "steamLogin": "Steam Login"
+  },
+  "errors": {
+    "generic": "An error occurred. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "unauthorized": "You are not authorized to perform this action.",
+    "notFound": "The requested resource was not found.",
+    "serverError": "Server error. Please try again later."
+  },
+  "genres": {
+    "Action": "Action",
+    "RPG": "RPG",
+    "Strategy": "Strategy",
+    "Simulation": "Simulation",
+    "FPS": "FPS",
+    "TPS": "TPS",
+    "Multiplayer": "Multiplayer",
+    "Adventure": "Adventure",
+    "Puzzle": "Puzzle",
+    "Racing": "Racing",
+    "Sports": "Sports",
+    "Horror": "Horror",
+    "Indie": "Indie",
+    "Casual": "Casual",
+    "Platformer": "Platformer",
+    "Stealth": "Stealth",
+    "Fighting": "Fighting",
+    "Roguelike": "Roguelike",
+    "Battle Royale": "Battle Royale",
+    "Card Game": "Card Game",
+    "VR": "VR",
+    "Other": "Other",
+    "Unknown": "Unknown",
+    "Single-player": "Single-player",
+    "Co-op": "Co-op",
+    "MMO": "MMO",
+    "Early Access": "Early Access",
+    "Free to Play": "Free to Play",
+    "액션": "Action",
+    "롤플레잉": "RPG",
+    "전략": "Strategy",
+    "시뮬레이션": "Simulation",
+    "1인칭 슈터": "FPS",
+    "멀티플레이어": "Multiplayer",
+    "어드벤처": "Adventure",
+    "퍼즐": "Puzzle",
+    "레이싱": "Racing",
+    "스포츠": "Sports",
+    "호러": "Horror",
+    "인디": "Indie",
+    "캐주얼": "Casual",
+    "플랫포머": "Platformer",
+    "스텔스": "Stealth",
+    "파이팅": "Fighting",
+    "로그라이크": "Roguelike",
+    "배틀 로얄": "Battle Royale",
+    "카드 게임": "Card Game",
+    "가상현실": "VR",
+    "기타": "Other",
+    "알 수 없음": "Unknown"
+  },
+  "time": {
+    "daysAgo": "{{count}} day ago",
+    "daysAgo_plural": "{{count}} days ago",
+    "hoursAgo": "{{count}} hour ago",
+    "hoursAgo_plural": "{{count}} hours ago",
+    "minutesAgo": "{{count}} minute ago",
+    "minutesAgo_plural": "{{count}} minutes ago",
+    "justNow": "Just now",
+    "noPlayRecord": "No play record"
+  }
+}

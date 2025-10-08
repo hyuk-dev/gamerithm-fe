@@ -602,8 +602,8 @@ function formatPlaytime(minutes: number): string {
   }
 }
 
-// 마지막 플레이 시간을 포맷팅하는 함수
-function formatLastPlayed(timestamp: number): string {
+// 마지막 플레이 시간을 포맷팅하는 함수 (클라이언트에서 번역하도록 구조만 제공)
+function formatLastPlayed(timestamp: number): { type: string; count: number } {
   const now = Date.now() / 1000;
   const diff = now - timestamp;
 
@@ -612,13 +612,13 @@ function formatLastPlayed(timestamp: number): string {
   const minutes = Math.floor(diff / 60);
 
   if (days > 0) {
-    return `${days}일 전`;
+    return { type: "days", count: days };
   } else if (hours > 0) {
-    return `${hours}시간 전`;
+    return { type: "hours", count: hours };
   } else if (minutes > 0) {
-    return `${minutes}분 전`;
+    return { type: "minutes", count: minutes };
   } else {
-    return "방금 전";
+    return { type: "justNow", count: 0 };
   }
 }
 
@@ -1346,7 +1346,7 @@ export async function GET(req: NextRequest) {
         coverImage: getBestGameImage(game.appid, details, game),
         lastPlayed: game.rtime_last_played
           ? formatLastPlayed(game.rtime_last_played)
-          : "플레이 기록 없음",
+          : { type: "noPlayRecord", count: 0 },
         lastPlayedTimestamp: game.rtime_last_played || 0,
         playtime_2weeks: game.playtime_2weeks || 0,
         playtime_minutes: game.playtime_forever, // 원본 분 단위 데이터 보존

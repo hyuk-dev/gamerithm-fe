@@ -8,7 +8,7 @@ type Game = {
   playtime_hours: number;
   genres: string[];
   coverImage?: string;
-  lastPlayed?: string;
+  lastPlayed?: string | { type: string; count: number };
 };
 
 type GamesState = {

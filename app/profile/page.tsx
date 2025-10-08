@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Navigation } from "@/components/navigation"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { ChevronLeft, ChevronRight, Edit, ExternalLink } from "lucide-react"
+import { useState } from "react";
+import { Navigation } from "@/components/navigation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ChevronLeft, ChevronRight, Edit, ExternalLink } from "lucide-react";
 
 export default function ProfilePage() {
   return (
@@ -23,33 +23,46 @@ export default function ProfilePage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
 function ProfileHeader() {
   return (
     <div className="relative">
       <div className="h-64 bg-gradient-to-r from-purple-900/50 via-blue-900/50 to-cyan-900/50" />
+      <img
+        src="/default-profile-banner.svg"
+        alt="Profile Banner"
+        className="absolute inset-0 w-full h-full object-cover opacity-20"
+      />
 
       <div className="max-w-7xl mx-auto px-4">
         <div className="relative -mt-20 flex flex-col md:flex-row items-center md:items-end gap-6">
           <div className="relative">
             <img
-              src="/diverse-gaming-avatars.png"
+              src="/default-avatar.svg"
               alt="Profile"
               className="w-40 h-40 rounded-full border-4 border-[#0f0f23] bg-gray-800"
             />
           </div>
 
           <div className="flex-1 text-center md:text-left pb-4">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">ProGamer2024</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              ProGamer2024
+            </h1>
             <p className="text-gray-400 mb-4">Member since January 2024</p>
             <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-              <Button variant="outline" className="bg-purple-600 hover:bg-purple-700 border-0">
+              <Button
+                variant="outline"
+                className="bg-purple-600 hover:bg-purple-700 border-0"
+              >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Steam Profile
               </Button>
-              <Button variant="outline" className="border-gray-700 hover:bg-gray-800 bg-transparent">
+              <Button
+                variant="outline"
+                className="border-gray-700 hover:bg-gray-800 bg-transparent"
+              >
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Profile
               </Button>
@@ -58,7 +71,7 @@ function ProfileHeader() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function StatsCards() {
@@ -67,13 +80,16 @@ function StatsCards() {
     { label: "Hours Played", value: "2,340", icon: "⏱️" },
     { label: "Recommendations Received", value: "45", icon: "✨" },
     { label: "Wishlist Items", value: "12", icon: "❤️" },
-  ]
+  ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => (
-          <Card key={index} className="bg-gray-900/50 border-gray-800 p-6 backdrop-blur-sm">
+          <Card
+            key={index}
+            className="bg-gray-900/50 border-gray-800 p-6 backdrop-blur-sm"
+          >
             <div className="flex items-center gap-4">
               <div className="text-4xl">{stat.icon}</div>
               <div>
@@ -87,7 +103,7 @@ function StatsCards() {
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 function TopGenres() {
@@ -96,7 +112,7 @@ function TopGenres() {
     { name: "RPG", percentage: 30, color: "bg-cyan-500" },
     { name: "Strategy", percentage: 15, color: "bg-blue-500" },
     { name: "Indie", percentage: 10, color: "bg-pink-500" },
-  ]
+  ];
 
   return (
     <Card className="bg-gray-900/50 border-gray-800 p-6 backdrop-blur-sm">
@@ -118,19 +134,39 @@ function TopGenres() {
         ))}
       </div>
     </Card>
-  )
+  );
 }
 
 function RecentlyPlayed() {
-  const [scrollPosition, setScrollPosition] = useState(0)
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const games = [
-    { title: "Cyberpunk 2077", lastPlayed: "2 hours ago", image: "/cyberpunk-2077-inspired-cover.png" },
-    { title: "Baldur's Gate 3", lastPlayed: "Yesterday", image: "/baldurs-gate-3-inspired-cover.png" },
-    { title: "Counter-Strike 2", lastPlayed: "2 days ago", image: "/counter-strike-2-game-cover.jpg" },
-    { title: "Elden Ring", lastPlayed: "3 days ago", image: "/elden-ring-knight.png" },
-    { title: "Starfield", lastPlayed: "5 days ago", image: "/vast-starfield.png" },
-  ]
+    {
+      title: "Cyberpunk 2077",
+      lastPlayed: "2 hours ago",
+      image: "/cyberpunk-2077-inspired-cover.png",
+    },
+    {
+      title: "Baldur's Gate 3",
+      lastPlayed: "Yesterday",
+      image: "/baldurs-gate-3-inspired-cover.png",
+    },
+    {
+      title: "Counter-Strike 2",
+      lastPlayed: "2 days ago",
+      image: "/counter-strike-2-game-cover.jpg",
+    },
+    {
+      title: "Elden Ring",
+      lastPlayed: "3 days ago",
+      image: "/elden-ring-knight.png",
+    },
+    {
+      title: "Starfield",
+      lastPlayed: "5 days ago",
+      image: "/vast-starfield.png",
+    },
+  ];
 
   return (
     <Card className="bg-gray-900/50 border-gray-800 p-6 backdrop-blur-sm">
@@ -149,7 +185,9 @@ function RecentlyPlayed() {
             variant="outline"
             size="icon"
             className="border-gray-700 hover:bg-gray-800 bg-transparent"
-            onClick={() => setScrollPosition(Math.min(games.length - 3, scrollPosition + 1))}
+            onClick={() =>
+              setScrollPosition(Math.min(games.length - 3, scrollPosition + 1))
+            }
           >
             <ChevronRight className="w-4 h-4" />
           </Button>
@@ -165,7 +203,7 @@ function RecentlyPlayed() {
             <div key={index} className="min-w-[200px] group cursor-pointer">
               <div className="relative aspect-[3/4] rounded-lg overflow-hidden mb-2">
                 <img
-                  src={game.image || "/placeholder.svg"}
+                  src={game.image || "/default-game-cover.svg"}
                   alt={game.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
@@ -175,22 +213,37 @@ function RecentlyPlayed() {
             </div>
           ))}
           <div className="min-w-[200px] flex items-center justify-center">
-            <Button variant="outline" className="border-gray-700 hover:bg-gray-800 bg-transparent">
+            <Button
+              variant="outline"
+              className="border-gray-700 hover:bg-gray-800 bg-transparent"
+            >
               View Full Library
             </Button>
           </div>
         </div>
       </div>
     </Card>
-  )
+  );
 }
 
 function FavoriteGames() {
   const favorites = [
-    { title: "The Witcher 3", reason: "Best story and world-building", image: "/witcher-3.jpg" },
-    { title: "Portal 2", reason: "Perfect puzzle design", image: "/portal-2.jpg" },
-    { title: "Hades", reason: "Addictive roguelike gameplay", image: "/hades-game.jpg" },
-  ]
+    {
+      title: "The Witcher 3",
+      reason: "Best story and world-building",
+      image: "/witcher-3.jpg",
+    },
+    {
+      title: "Portal 2",
+      reason: "Perfect puzzle design",
+      image: "/portal-2.jpg",
+    },
+    {
+      title: "Hades",
+      reason: "Addictive roguelike gameplay",
+      image: "/hades-game.jpg",
+    },
+  ];
 
   return (
     <Card className="bg-gray-900/50 border-gray-800 p-6 backdrop-blur-sm">
@@ -200,7 +253,7 @@ function FavoriteGames() {
           <div key={index} className="group cursor-pointer">
             <div className="relative aspect-[2/3] rounded-lg overflow-hidden mb-3">
               <img
-                src={game.image || "/placeholder.svg"}
+                src={game.image || "/default-game-cover.svg"}
                 alt={game.title}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               />
@@ -213,7 +266,7 @@ function FavoriteGames() {
         ))}
       </div>
     </Card>
-  )
+  );
 }
 
 function ActivityGraph() {
@@ -225,9 +278,9 @@ function ActivityGraph() {
     { day: "Fri", hours: 6 },
     { day: "Sat", hours: 8 },
     { day: "Sun", hours: 4 },
-  ]
+  ];
 
-  const maxHours = Math.max(...data.map((d) => d.hours))
+  const maxHours = Math.max(...data.map((d) => d.hours));
 
   return (
     <Card className="bg-gray-900/50 border-gray-800 p-6 backdrop-blur-sm">
@@ -235,8 +288,13 @@ function ActivityGraph() {
       <div className="h-64 flex items-end justify-between gap-4">
         {data.map((item, index) => (
           <div key={index} className="flex-1 flex flex-col items-center gap-2">
-            <div className="text-sm font-semibold text-purple-400">{item.hours}h</div>
-            <div className="w-full bg-gray-800 rounded-t-lg relative overflow-hidden" style={{ height: "200px" }}>
+            <div className="text-sm font-semibold text-purple-400">
+              {item.hours}h
+            </div>
+            <div
+              className="w-full bg-gray-800 rounded-t-lg relative overflow-hidden"
+              style={{ height: "200px" }}
+            >
               <div
                 className={`absolute bottom-0 w-full bg-gradient-to-t from-purple-500 to-cyan-500 transition-all duration-500 ${
                   item.hours >= 5 ? "shadow-lg shadow-purple-500/50" : ""
@@ -249,15 +307,27 @@ function ActivityGraph() {
         ))}
       </div>
     </Card>
-  )
+  );
 }
 
 function Achievements() {
   const badges = [
-    { name: "Early Adopter", description: "Joined in the first month", icon: "🌟" },
-    { name: "100 Games Explored", description: "Analyzed 100+ games", icon: "🎮" },
-    { name: "AI Enthusiast", description: "Used AI recommendations 50+ times", icon: "🤖" },
-  ]
+    {
+      name: "Early Adopter",
+      description: "Joined in the first month",
+      icon: "🌟",
+    },
+    {
+      name: "100 Games Explored",
+      description: "Analyzed 100+ games",
+      icon: "🎮",
+    },
+    {
+      name: "AI Enthusiast",
+      description: "Used AI recommendations 50+ times",
+      icon: "🤖",
+    },
+  ];
 
   return (
     <Card className="bg-gray-900/50 border-gray-800 p-6 backdrop-blur-sm">
@@ -268,7 +338,9 @@ function Achievements() {
             key={index}
             className="flex items-center gap-4 p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer group"
           >
-            <div className="text-4xl group-hover:scale-110 transition-transform">{badge.icon}</div>
+            <div className="text-4xl group-hover:scale-110 transition-transform">
+              {badge.icon}
+            </div>
             <div>
               <h3 className="font-semibold">{badge.name}</h3>
               <p className="text-sm text-gray-400">{badge.description}</p>
@@ -277,5 +349,5 @@ function Achievements() {
         ))}
       </div>
     </Card>
-  )
+  );
 }
