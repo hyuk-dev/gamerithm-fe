@@ -24,7 +24,7 @@ i18n
     debug: process.env.NODE_ENV === "development",
 
     detection: {
-      order: ["localStorage", "navigator", "htmlTag"],
+      order: ["localStorage", "htmlTag"],
       caches: ["localStorage"],
     },
 

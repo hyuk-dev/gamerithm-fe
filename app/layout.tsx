@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
 import "./globals.css";
 import { I18nProvider } from "@/components/i18n-provider";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: "Gamerithm - AI Game Recommendation Platform",
@@ -26,6 +27,7 @@ export default function RootLayout({
           <Suspense fallback={null}>{children}</Suspense>
         </I18nProvider>
         <Analytics />
+        <SpeedInsights/>
       </body>
     </html>
   );
