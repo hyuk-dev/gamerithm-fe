@@ -17,6 +17,10 @@ export interface Game {
 export interface GameRecommendation extends Game {
   matchScore: number;
   reasons: string[];
+  aiExplanation?: string;
+  bannerImage?: string;
+  multiplayer?: boolean;
+  price?: string;
 }
 
 export interface GameLibrary {

@@ -37,6 +37,11 @@ export function GameCard({
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            onError={(e) => {
+              // 이미지 로드 실패 시 404 이미지로 대체
+              const target = e.target as HTMLImageElement;
+              target.src = "/default-game-cover.svg";
+            }}
           />
         </div>
         <div className="p-4 space-y-3">

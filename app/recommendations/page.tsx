@@ -24,68 +24,79 @@ import {
 import { Navigation } from "@/components/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { GameRecommendation } from "@/types/game";
 
 // Mock recommendation data
-const mockRecommendations = [
+const mockRecommendations: GameRecommendation[] = [
   {
     id: 1,
     title: "Starfield",
     price: "$69.99",
     bannerImage: "/starfield-space-exploration-game-banner.jpg",
+    coverImage: "/starfield-space-exploration-game-banner.jpg",
     matchScore: 95,
     aiExplanation:
       "You'll love this because it combines the deep RPG mechanics you enjoyed in Baldur's Gate 3 with the exploration freedom of open-world games. The space setting offers a fresh take on the genres you already love.",
     genres: ["RPG", "Action", "Exploration"],
     multiplayer: false,
     releaseDate: "2023-09-06",
+    reasons: ["Deep RPG mechanics", "Open-world exploration"],
   },
   {
     id: 2,
     title: "Hades II",
     price: "$29.99",
     bannerImage: "/hades-2-roguelike-action-game-banner.jpg",
+    coverImage: "/hades-2-roguelike-action-game-banner.jpg",
     matchScore: 92,
     aiExplanation:
       "Based on your love for action-packed gameplay and strategic depth, Hades II delivers fast-paced combat with meaningful progression. The roguelike elements ensure every run feels fresh and rewarding.",
     genres: ["Action", "Roguelike", "Indie"],
     multiplayer: false,
     releaseDate: "2024-05-06",
+    reasons: ["Fast-paced combat", "Roguelike progression"],
   },
   {
     id: 3,
     title: "Helldivers 2",
     price: "$39.99",
     bannerImage: "/helldivers-2-co-op-shooter-game-banner.jpg",
+    coverImage: "/helldivers-2-co-op-shooter-game-banner.jpg",
     matchScore: 89,
     aiExplanation:
       "You've spent significant time in multiplayer FPS games like Counter-Strike 2 and Valorant. Helldivers 2 offers cooperative gameplay with tactical depth, perfect for team-based action you enjoy.",
     genres: ["FPS", "Multiplayer", "Co-op"],
     multiplayer: true,
     releaseDate: "2024-02-08",
+    reasons: ["Cooperative gameplay", "Tactical depth"],
   },
   {
     id: 4,
     title: "Manor Lords",
     price: "$39.99",
     bannerImage: "/manor-lords-medieval-strategy-game-banner.jpg",
+    coverImage: "/manor-lords-medieval-strategy-game-banner.jpg",
     matchScore: 87,
     aiExplanation:
       "Your extensive playtime in Civilization VI shows you appreciate deep strategy games. Manor Lords combines city-building with tactical battles in a medieval setting, offering the strategic depth you crave.",
     genres: ["Strategy", "City-Builder", "Medieval"],
     multiplayer: false,
     releaseDate: "2024-04-26",
+    reasons: ["City-building", "Strategic battles"],
   },
   {
     id: 5,
     title: "Palworld",
     price: "$29.99",
     bannerImage: "/palworld-creature-collection-survival-game-banner.jpg",
+    coverImage: "/palworld-creature-collection-survival-game-banner.jpg",
     matchScore: 84,
     aiExplanation:
       "This unique blend of survival, crafting, and creature collection offers something fresh while maintaining the action and exploration elements you enjoy. The multiplayer aspect adds replay value.",
     genres: ["Survival", "Action", "Multiplayer"],
     multiplayer: true,
     releaseDate: "2024-01-19",
+    reasons: ["Survival crafting", "Creature collection"],
   },
 ];
 
@@ -98,10 +109,10 @@ export default function RecommendationsPage() {
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedRecommendations, setGeneratedRecommendations] = useState<
-    typeof mockRecommendations
+    GameRecommendation[]
   >([]);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { toast } = useToast();
 
   const toggleGenre = (genre: string) => {
@@ -125,6 +136,7 @@ export default function RecommendationsPage() {
         },
         body: JSON.stringify({
           userPrompt: userPrompt.trim(),
+          language: i18n.language,
         }),
       });
 
@@ -140,10 +152,26 @@ export default function RecommendationsPage() {
 
       const recommendations = data.recommendations || data;
 
-
       // Store recommendation data received from API
-      const finalRecommendations = Array.isArray(recommendations)
-        ? recommendations
+      const finalRecommendations: GameRecommendation[] = Array.isArray(
+        recommendations
+      )
+        ? recommendations.map((rec: any) => ({
+            id: rec.id || 0,
+            title: rec.title || "",
+            coverImage:
+              rec.coverImage || rec.bannerImage || "/default-game-cover.svg",
+            matchScore: rec.matchScore || 0,
+            reasons: rec.reasons || [],
+            // If API returns title and aiExplanation, keep them as fallback
+            aiExplanation: rec.aiExplanation || rec.description || "",
+            bannerImage:
+              rec.bannerImage || rec.coverImage || "/default-game-cover.svg",
+            multiplayer: rec.multiplayer || false,
+            price: rec.price || "$0.00",
+            genres: rec.genres || [],
+            releaseDate: rec.releaseDate || "",
+          }))
         : [];
 
       setGeneratedRecommendations(finalRecommendations);
@@ -159,7 +187,7 @@ export default function RecommendationsPage() {
       console.error(t("recommendations.messages.generationError"), error);
 
       // Use mock data when error occurs
-      setGeneratedRecommendations(mockRecommendations);
+      setGeneratedRecommendations(mockRecommendations as GameRecommendation[]);
       setShowRecommendations(true);
 
       toast({
@@ -180,7 +208,7 @@ export default function RecommendationsPage() {
 
   const filteredRecommendations = recommendationsToFilter
     .filter((game) => {
-      const price = Number.parseFloat(game.price.replace("$", ""));
+      const price = Number.parseFloat((game.price || "$0").replace("$", ""));
       if (price < priceRange[0] || price > priceRange[1]) return false;
 
       if (
@@ -201,12 +229,13 @@ export default function RecommendationsPage() {
       if (sortBy === "match") return b.matchScore - a.matchScore;
       if (sortBy === "price")
         return (
-          Number.parseFloat(a.price.replace("$", "")) -
-          Number.parseFloat(b.price.replace("$", ""))
+          Number.parseFloat((a.price || "$0").replace("$", "")) -
+          Number.parseFloat((b.price || "$0").replace("$", ""))
         );
       if (sortBy === "release")
         return (
-          new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
+          new Date(b.releaseDate || "").getTime() -
+          new Date(a.releaseDate || "").getTime()
         );
       return 0;
     });
@@ -223,7 +252,7 @@ export default function RecommendationsPage() {
             className="bg-purple-600 hover:bg-purple-700 rounded-full w-12 h-12 shadow-lg cursor-pointer"
           >
             <svg
-              className={`w-5 h-5 transition-transform duration-200 ${
+              className={`w-5 h-5 transition-transform duration-200 text-white ${
                 showMobileFilters ? "rotate-180" : ""
               }`}
               fill="none"
@@ -593,11 +622,15 @@ function RecommendationCard({
   game,
   index,
 }: {
-  game: (typeof mockRecommendations)[0];
+  game: GameRecommendation;
   index: number;
 }) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const { t } = useTranslation();
+
+  // Use title and description directly from API (already localized)
+  const gameTitle = game.title || "Unknown Game";
+  const gameDescription = game.aiExplanation || "";
 
   // Game title image mapping
   const getGameImage = (title: string, bannerImage: string) => {
@@ -762,33 +795,14 @@ function RecommendationCard({
       "Helldivers 2": "https://store.steampowered.com/app/553850/HELLDIVERS_2/",
       "Manor Lords": "https://store.steampowered.com/app/1363080/Manor_Lords/",
       Palworld: "https://store.steampowered.com/app/1623730/Palworld/",
-      "Baldur's Gate 3":
-        "https://store.steampowered.com/app/1086940/Baldurs_Gate_3/",
-      "Civilization VI":
-        "https://store.steampowered.com/app/289070/Sid_Meiers_Civilization_VI/",
-      "Counter-Strike 2":
-        "https://store.steampowered.com/app/730/CounterStrike_2/",
-      "Cyberpunk 2077":
-        "https://store.steampowered.com/app/1091500/Cyberpunk_2077/",
-      "Elden Ring": "https://store.steampowered.com/app/1245620/ELDEN_RING/",
-      "Portal 2": "https://store.steampowered.com/app/620/Portal_2/",
-      Valorant: "https://playvalorant.com/",
-      "The Witcher 3":
-        "https://store.steampowered.com/app/292030/The_Witcher_3_Wild_Hunt/",
-      Hades: "https://store.steampowered.com/app/1145360/Hades/",
     };
 
-    // Find URL with partial matching
-    for (const [gameName, url] of Object.entries(steamUrlMap)) {
-      if (
-        title.toLowerCase().includes(gameName.toLowerCase()) ||
-        gameName.toLowerCase().includes(title.toLowerCase())
-      ) {
-        return url;
-      }
+    // Find URL by title
+    if (title && steamUrlMap[title]) {
+      return steamUrlMap[title];
     }
 
-    // Default to Steam store search page
+    // Fallback to Steam store search page
     const searchQuery = encodeURIComponent(title);
     return `https://store.steampowered.com/search/?term=${searchQuery}`;
   };
@@ -811,13 +825,13 @@ function RecommendationCard({
         {/* Banner Image */}
         <div className="aspect-[16/9] overflow-hidden rounded-lg">
           <img
-            src={getGameImage(game.title, game.bannerImage)}
-            alt={game.title}
+            src={getGameImage(gameTitle || "", game.bannerImage || "")}
+            alt={gameTitle}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             onError={(e) => {
-              // 이미지 로드 실패 시 기본 이미지로 대체
+              // 이미지 로드 실패 시 404 이미지로 대체
               const target = e.target as HTMLImageElement;
-              target.src = "/generic-fantasy-game-cover.png";
+              target.src = "/default-game-cover.svg";
             }}
           />
         </div>
@@ -825,8 +839,10 @@ function RecommendationCard({
         {/* Title and Price */}
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-2xl font-bold text-white mb-1">{game.title}</h3>
-            <p className="text-2xl font-bold text-cyan-400">{game.price}</p>
+            <h3 className="text-2xl font-bold text-white mb-1">{gameTitle}</h3>
+            <p className="text-2xl font-bold text-cyan-400">
+              {game.price || "$0.00"}
+            </p>
           </div>
         </div>
 
@@ -851,7 +867,7 @@ function RecommendationCard({
             <span className="text-purple-400 font-semibold">
               {t("recommendations.gameCard.youllLoveThis")}{" "}
             </span>
-            {game.aiExplanation}
+            {gameDescription}
           </p>
         </div>
 
@@ -880,7 +896,7 @@ function RecommendationCard({
         <div className="space-y-3">
           <Button
             className="w-full bg-[#171a21] hover:bg-[#1b2838] text-white cursor-pointer"
-            onClick={() => window.open(getSteamUrl(game.title), "_blank")}
+            onClick={() => window.open(getSteamUrl(gameTitle || ""), "_blank")}
           >
             <svg
               className="w-5 h-5 mr-2"

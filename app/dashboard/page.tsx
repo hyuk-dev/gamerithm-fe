@@ -147,7 +147,7 @@ export default function DashboardPage() {
             className="bg-purple-600 hover:bg-purple-700 rounded-full w-12 h-12 shadow-lg cursor-pointer"
           >
             <svg
-              className={`w-5 h-5 transition-transform duration-200 ${
+              className={`w-5 h-5 transition-transform duration-200 text-white ${
                 showMobileFilters ? "rotate-180" : ""
               }`}
               fill="none"

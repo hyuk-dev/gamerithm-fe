@@ -57,14 +57,16 @@ export function LanguageSelector() {
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+          className="flex items-center justify-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer h-8"
         >
-          <span className="text-lg">{currentLanguage.flag}</span>
-          <span className="text-sm font-medium hidden sm:inline">
+          <span className="text-lg flex items-center justify-center -mt-1">
+            {currentLanguage.flag}
+          </span>
+          <span className="text-sm font-medium hidden sm:inline flex items-center justify-center">
             {currentLanguage.name}
           </span>
           <svg
-            className={`w-4 h-4 transition-transform duration-200 ${
+            className={`w-4 h-4 transition-transform duration-200 flex items-center justify-center ${
               isOpen ? "rotate-180" : ""
             }`}
             fill="none"
