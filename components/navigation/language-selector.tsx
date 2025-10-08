@@ -19,13 +19,29 @@ export function LanguageSelector() {
   const { i18n, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState(languages[0]);
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    // Ensure we start with English as default
+    if (!i18n.language || i18n.language === "ko") {
+      i18n.changeLanguage("en");
+    }
+    setCurrentLanguage(
+      languages.find((lang) => lang.code === i18n.language) || languages[0]
+    );
+  }, [i18n]);
 
-  const currentLanguage =
-    languages.find((lang) => lang.code === i18n.language) || languages[0];
+  useEffect(() => {
+    const handleLanguageChange = (lng: string) => {
+      setCurrentLanguage(
+        languages.find((lang) => lang.code === lng) || languages[0]
+      );
+    };
+
+    i18n.on("languageChanged", handleLanguageChange);
+    return () => i18n.off("languageChanged", handleLanguageChange);
+  }, [i18n]);
 
   const handleLanguageChange = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
