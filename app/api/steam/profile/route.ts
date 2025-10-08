@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
       username: player.personaname as string,
       country: (player.loccountrycode as string) || undefined,
     };
-    console.log(profile);
+
     return NextResponse.json(profile);
   } catch (e) {
     return NextResponse.json({ error: "request_failed" }, { status: 500 });

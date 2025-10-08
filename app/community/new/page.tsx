@@ -1,26 +1,32 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Navigation } from "@/components/navigation"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useState } from "react";
+import { Navigation } from "@/components/navigation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function NewPostPage() {
-  const router = useRouter()
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const [category, setCategory] = useState("")
-  const [tags, setTags] = useState<string[]>([])
-  const [tagInput, setTagInput] = useState("")
+  const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
 
   const categories = [
     "General Discussion",
@@ -29,25 +35,25 @@ export default function NewPostPage() {
     "Strategy & Tips",
     "Bug Reports",
     "Screenshots & Clips",
-  ]
+  ];
 
   const addTag = () => {
     if (tagInput.trim() && !tags.includes(tagInput.trim()) && tags.length < 5) {
-      setTags([...tags, tagInput.trim()])
-      setTagInput("")
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
     }
-  }
+  };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove))
-  }
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Handle post creation
-    console.log({ title, content, category, tags })
-    router.push("/community")
-  }
+
+    router.push("/community");
+  };
 
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white">
@@ -61,15 +67,28 @@ export default function NewPostPage() {
               href="/community"
               className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors cursor-pointer mb-4"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
               Back to Community
             </Link>
             <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
               Create New Post
             </h1>
-            <p className="text-gray-400 mt-2">Share your thoughts, recommendations, or questions with the community</p>
+            <p className="text-gray-400 mt-2">
+              Share your thoughts, recommendations, or questions with the
+              community
+            </p>
           </div>
 
           {/* Post Creation Form */}
@@ -77,10 +96,13 @@ export default function NewPostPage() {
             <Card className="bg-[#1a1a2e] border-gray-800 p-6 space-y-6">
               {/* Category Selection */}
               <div className="space-y-2">
-                <Label htmlFor="category" className="text-sm font-medium text-gray-300">
+                <Label
+                  htmlFor="category"
+                  className="text-sm font-medium text-gray-300"
+                >
                   Category
                 </Label>
-                <Select value={category} onValueChange={setCategory} modal={false}>
+                <Select value={category} onValueChange={setCategory}>
                   <SelectTrigger
                     id="category"
                     className="bg-[#0f0f23] border-gray-700 cursor-pointer hover:border-purple-500 transition-colors"
@@ -89,7 +111,11 @@ export default function NewPostPage() {
                   </SelectTrigger>
                   <SelectContent className="bg-[#1a1a2e] border-gray-700">
                     {categories.map((cat) => (
-                      <SelectItem key={cat} value={cat} className="cursor-pointer">
+                      <SelectItem
+                        key={cat}
+                        value={cat}
+                        className="cursor-pointer"
+                      >
                         {cat}
                       </SelectItem>
                     ))}
@@ -99,7 +125,10 @@ export default function NewPostPage() {
 
               {/* Title */}
               <div className="space-y-2">
-                <Label htmlFor="title" className="text-sm font-medium text-gray-300">
+                <Label
+                  htmlFor="title"
+                  className="text-sm font-medium text-gray-300"
+                >
                   Title
                 </Label>
                 <Input
@@ -114,7 +143,10 @@ export default function NewPostPage() {
 
               {/* Content */}
               <div className="space-y-2">
-                <Label htmlFor="content" className="text-sm font-medium text-gray-300">
+                <Label
+                  htmlFor="content"
+                  className="text-sm font-medium text-gray-300"
+                >
                   Content
                 </Label>
                 <Textarea
@@ -125,12 +157,17 @@ export default function NewPostPage() {
                   className="bg-[#0f0f23] border-gray-700 text-white placeholder:text-gray-500 focus:border-purple-500 transition-colors min-h-[300px] cursor-text"
                   required
                 />
-                <p className="text-xs text-gray-500">{content.length} characters</p>
+                <p className="text-xs text-gray-500">
+                  {content.length} characters
+                </p>
               </div>
 
               {/* Tags */}
               <div className="space-y-2">
-                <Label htmlFor="tags" className="text-sm font-medium text-gray-300">
+                <Label
+                  htmlFor="tags"
+                  className="text-sm font-medium text-gray-300"
+                >
                   Tags (up to 5)
                 </Label>
                 <div className="flex gap-2">
@@ -140,8 +177,8 @@ export default function NewPostPage() {
                     onChange={(e) => setTagInput(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        e.preventDefault()
-                        addTag()
+                        e.preventDefault();
+                        addTag();
                       }
                     }}
                     placeholder="Add tags (press Enter)"
@@ -202,15 +239,22 @@ export default function NewPostPage() {
 
           {/* Tips Card */}
           <Card className="bg-[#1a1a2e] border-gray-800 p-6 mt-6">
-            <h3 className="text-lg font-semibold text-purple-400 mb-3">Posting Tips</h3>
+            <h3 className="text-lg font-semibold text-purple-400 mb-3">
+              Posting Tips
+            </h3>
             <ul className="space-y-2 text-sm text-gray-400">
               <li className="flex items-start gap-2">
                 <span className="text-purple-400 mt-0.5">•</span>
-                <span>Choose a clear, descriptive title that summarizes your post</span>
+                <span>
+                  Choose a clear, descriptive title that summarizes your post
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-purple-400 mt-0.5">•</span>
-                <span>Use proper formatting and break up long paragraphs for readability</span>
+                <span>
+                  Use proper formatting and break up long paragraphs for
+                  readability
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-purple-400 mt-0.5">•</span>
@@ -225,5 +269,5 @@ export default function NewPostPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

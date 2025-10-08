@@ -86,10 +86,6 @@ async function getSteamAppDetails(
           if (data[appId]?.success && data[appId].data) {
             const genres =
               data[appId].data.genres?.map((g: any) => g.description) || [];
-            console.log(`Steam Web API for ${appId}:`, {
-              genres,
-              success: data[appId].success,
-            });
             return { appId, genres };
           }
         }
@@ -148,28 +144,6 @@ async function getGameDetails(appIds: number[]): Promise<SteamAppDetails> {
 
       if (response.ok) {
         const batchResults = await response.json();
-
-        // 디버깅: Steam Store API 응답 확인
-        console.log(
-          `Steam Store API Response for batch ${i}-${i + BATCH_SIZE}:`,
-          Object.keys(batchResults).map((appId) => ({
-            appId,
-            success: batchResults[appId]?.success,
-            hasData: !!batchResults[appId]?.data,
-            genres:
-              batchResults[appId]?.data?.genres?.map(
-                (g: any) => g.description
-              ) || [],
-            categories:
-              batchResults[appId]?.data?.categories?.map(
-                (c: any) => c.description
-              ) || [],
-            tags:
-              batchResults[appId]?.data?.tags
-                ?.slice(0, 3)
-                .map((t: any) => t.description) || [],
-          }))
-        );
 
         Object.assign(results, batchResults);
       } else {
@@ -1305,7 +1279,7 @@ export async function GET(req: NextRequest) {
       getSteamAppDetails(appIds),
     ]);
 
-    console.log("Steam Web API Results:", steamAppDetails);
+
 
     // 게임 데이터 변환 (개선된 장르 추출 로직)
     const games = playedGames.map((game) => {

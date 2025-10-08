@@ -11,25 +11,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const languages = [
-  { code: "en", name: "English", flag: "🇺🇸" },
   { code: "ko", name: "한국어", flag: "🇰🇷" },
+  { code: "en", name: "English", flag: "🇺🇸" },
 ];
 
 export function LanguageSelector() {
   const { i18n, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState(languages[0]);
+  const [currentLanguage, setCurrentLanguage] = useState(languages[0]); // Korean as default
 
   useEffect(() => {
     setIsClient(true);
-    // Ensure we start with English as default
-    if (!i18n.language || i18n.language === "ko") {
-      i18n.changeLanguage("en");
-    }
-    setCurrentLanguage(
-      languages.find((lang) => lang.code === i18n.language) || languages[0]
-    );
+    // Set current language based on i18n state
+    const currentLang =
+      languages.find((lang) => lang.code === i18n.language) || languages[0];
+    setCurrentLanguage(currentLang);
   }, [i18n]);
 
   useEffect(() => {
@@ -45,6 +42,8 @@ export function LanguageSelector() {
 
   const handleLanguageChange = (languageCode: string) => {
     i18n.changeLanguage(languageCode);
+    // Save to localStorage
+    localStorage.setItem("i18nextLng", languageCode);
     setIsOpen(false);
   };
 
@@ -58,14 +57,16 @@ export function LanguageSelector() {
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+          className="flex items-center justify-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer h-8"
         >
-          <span className="text-lg">{currentLanguage.flag}</span>
-          <span className="text-sm font-medium hidden sm:inline">
+          <span className="text-lg flex items-center justify-center -mt-1">
+            {currentLanguage.flag}
+          </span>
+          <span className="text-sm font-medium hidden sm:inline flex items-center justify-center">
             {currentLanguage.name}
           </span>
           <svg
-            className={`w-4 h-4 transition-transform duration-200 ${
+            className={`w-4 h-4 transition-transform duration-200 flex items-center justify-center ${
               isOpen ? "rotate-180" : ""
             }`}
             fill="none"

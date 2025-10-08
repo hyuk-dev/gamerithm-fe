@@ -82,7 +82,7 @@ What are your thoughts on BG3? What was your favorite moment?`,
 
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Comment:", commentText);
+
     setCommentText("");
   };
 

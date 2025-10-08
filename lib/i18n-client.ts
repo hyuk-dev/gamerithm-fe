@@ -20,11 +20,11 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: "en", // Default language is English
+    fallbackLng: "ko", // Default language is Korean
     debug: process.env.NODE_ENV === "development",
 
     detection: {
-      order: ["localStorage", "htmlTag"],
+      order: ["localStorage", "navigator", "htmlTag"],
       caches: ["localStorage"],
     },
 

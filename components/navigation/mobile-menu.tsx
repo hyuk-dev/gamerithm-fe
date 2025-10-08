@@ -4,7 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface MobileMenuProps {
   navLinks: Array<{ href: string; label: string }>;
@@ -44,7 +49,8 @@ export function MobileMenu({ navLinks }: MobileMenuProps) {
         side="left"
         className="w-[280px] bg-[#0f0f23]/98 backdrop-blur-xl border-white/10 text-white"
       >
-        <div className="flex flex-col gap-6 mt-8">
+        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+        <div className="flex flex-col gap-6 mt-12">
           {/* Mobile Navigation Links */}
           <nav className="flex flex-col gap-2">
             {navLinks.map((link) => (
