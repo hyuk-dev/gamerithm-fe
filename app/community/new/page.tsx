@@ -45,7 +45,7 @@ export default function NewPostPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle post creation
-    console.log({ title, content, category, tags })
+
     router.push("/community")
   }
 

@@ -137,21 +137,15 @@ export default function RecommendationsPage() {
       const data = await response.json();
 
       // API response structure verification and processing
-      console.log(t("recommendations.messages.apiResponseData"), data);
+
       const recommendations = data.recommendations || data;
-      console.log(
-        t("recommendations.messages.processedRecommendations"),
-        recommendations
-      );
+
 
       // Store recommendation data received from API
       const finalRecommendations = Array.isArray(recommendations)
         ? recommendations
         : [];
-      console.log(
-        t("recommendations.messages.finalRecommendations"),
-        finalRecommendations
-      );
+
       setGeneratedRecommendations(finalRecommendations);
       setShowRecommendations(true);
 
