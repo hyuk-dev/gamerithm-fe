@@ -1,28 +1,32 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Navigation } from "@/components/navigation"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Textarea } from "@/components/ui/textarea"
-import { Separator } from "@/components/ui/separator"
-import Link from "next/link"
-import { useParams } from "next/navigation"
+import { useState } from "react";
+import { Navigation } from "@/components/navigation";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export default function PostDetailPage() {
-  const params = useParams()
-  const [upvoted, setUpvoted] = useState(false)
-  const [bookmarked, setBookmarked] = useState(false)
-  const [commentText, setCommentText] = useState("")
+  const params = useParams();
+  const [upvoted, setUpvoted] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
+  const [commentText, setCommentText] = useState("");
 
   // Mock post data
   const post = {
     id: params.id,
-    author: { name: "Alex Chen", avatar: "/diverse-user-avatars.png", username: "alexchen" },
+    author: {
+      name: "Alex Chen",
+      avatar: "/diverse-user-avatars.png",
+      username: "alexchen",
+    },
     category: "Game Recommendation",
     title: "Just finished Baldur's Gate 3 - Absolutely Mind-Blowing!",
     content: `After 180 hours, I finally completed my first playthrough of Baldur's Gate 3, and I'm absolutely blown away by the experience. This game has set a new standard for RPGs.
@@ -47,12 +51,16 @@ What are your thoughts on BG3? What was your favorite moment?`,
     comments: 67,
     tags: ["RPG", "Strategy", "Story-Rich"],
     thumbnail: "/baldurs-gate-3-inspired-cover.png",
-  }
+  };
 
   const mockComments = [
     {
       id: 1,
-      author: { name: "Sarah Kim", avatar: "/diverse-gaming-avatars.png", username: "sarahk" },
+      author: {
+        name: "Sarah Kim",
+        avatar: "/diverse-gaming-avatars.png",
+        username: "sarahk",
+      },
       content:
         "Completely agree! The character development in this game is incredible. Shadowheart's story arc had me in tears.",
       timestamp: "1 hour ago",
@@ -60,19 +68,23 @@ What are your thoughts on BG3? What was your favorite moment?`,
     },
     {
       id: 2,
-      author: { name: "Mike Torres", avatar: "/diverse-user-avatars.png", username: "miket" },
+      author: {
+        name: "Mike Torres",
+        avatar: "/diverse-user-avatars.png",
+        username: "miket",
+      },
       content:
         "180 hours and you only did one playthrough? I'm on my third run and still discovering new things. The replayability is insane!",
       timestamp: "45 minutes ago",
       upvotes: 15,
     },
-  ]
+  ];
 
   const handleCommentSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Comment:", commentText)
-    setCommentText("")
-  }
+    e.preventDefault();
+    console.log("Comment:", commentText);
+    setCommentText("");
+  };
 
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white">
@@ -85,8 +97,18 @@ What are your thoughts on BG3? What was your favorite moment?`,
             href="/community"
             className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors cursor-pointer mb-6"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back to Community
           </Link>
@@ -94,7 +116,10 @@ What are your thoughts on BG3? What was your favorite moment?`,
           {/* Post Card */}
           <Card className="bg-[#1a1a2e] border-gray-800 p-8 mb-6">
             {/* Category Badge */}
-            <Badge variant="secondary" className="bg-purple-900/30 text-purple-300 mb-4">
+            <Badge
+              variant="secondary"
+              className="bg-purple-900/30 text-purple-300 mb-4"
+            >
               {post.category}
             </Badge>
 
@@ -108,12 +133,19 @@ What are your thoughts on BG3? What was your favorite moment?`,
                 className="flex items-center gap-2 hover:opacity-80 cursor-pointer"
               >
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
+                  <AvatarImage
+                    src={post.author.avatar || "/placeholder.svg"}
+                    alt={post.author.name}
+                  />
                   <AvatarFallback>{post.author.name[0]}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-sm font-medium text-white">{post.author.name}</p>
-                  <p className="text-xs text-gray-500">@{post.author.username}</p>
+                  <p className="text-sm font-medium text-white">
+                    {post.author.name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    @{post.author.username}
+                  </p>
                 </div>
               </Link>
               <span className="text-xs text-gray-500">•</span>
@@ -124,7 +156,7 @@ What are your thoughts on BG3? What was your favorite moment?`,
             {post.thumbnail && (
               <div className="w-full h-64 rounded-lg overflow-hidden mb-6">
                 <img
-                  src={post.thumbnail || "/placeholder.svg"}
+                  src={post.thumbnail || "/default-game-cover.svg"}
                   alt={post.title}
                   className="w-full h-full object-cover"
                 />
@@ -133,7 +165,9 @@ What are your thoughts on BG3? What was your favorite moment?`,
 
             {/* Content */}
             <div className="prose prose-invert max-w-none mb-6">
-              <div className="text-gray-300 whitespace-pre-wrap leading-relaxed">{post.content}</div>
+              <div className="text-gray-300 whitespace-pre-wrap leading-relaxed">
+                {post.content}
+              </div>
             </div>
 
             {/* Tags */}
@@ -156,7 +190,9 @@ What are your thoughts on BG3? What was your favorite moment?`,
               <button
                 onClick={() => setUpvoted(!upvoted)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all cursor-pointer hover:scale-105 ${
-                  upvoted ? "bg-purple-900/30 text-purple-400" : "bg-[#0f0f23] text-gray-400 hover:bg-purple-900/20"
+                  upvoted
+                    ? "bg-purple-900/30 text-purple-400"
+                    : "bg-[#0f0f23] text-gray-400 hover:bg-purple-900/20"
                 }`}
               >
                 <svg
@@ -165,15 +201,24 @@ What are your thoughts on BG3? What was your favorite moment?`,
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 15l7-7 7 7"
+                  />
                 </svg>
-                <span className="font-medium">{post.upvotes + (upvoted ? 1 : 0)}</span>
+                <span className="font-medium">
+                  {post.upvotes + (upvoted ? 1 : 0)}
+                </span>
               </button>
 
               <button
                 onClick={() => setBookmarked(!bookmarked)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all cursor-pointer hover:scale-105 ${
-                  bookmarked ? "bg-cyan-900/30 text-cyan-400" : "bg-[#0f0f23] text-gray-400 hover:bg-cyan-900/20"
+                  bookmarked
+                    ? "bg-cyan-900/30 text-cyan-400"
+                    : "bg-[#0f0f23] text-gray-400 hover:bg-cyan-900/20"
                 }`}
               >
                 <svg
@@ -193,7 +238,12 @@ What are your thoughts on BG3? What was your favorite moment?`,
               </button>
 
               <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0f0f23] text-gray-400 hover:bg-purple-900/20 hover:text-purple-400 transition-all cursor-pointer hover:scale-105">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -209,7 +259,8 @@ What are your thoughts on BG3? What was your favorite moment?`,
           {/* Comments Section */}
           <Card className="bg-[#1a1a2e] border-gray-800 p-6">
             <h2 className="text-2xl font-bold text-white mb-6">
-              Comments <span className="text-gray-500">({mockComments.length})</span>
+              Comments{" "}
+              <span className="text-gray-500">({mockComments.length})</span>
             </h2>
 
             {/* Comment Form */}
@@ -236,9 +287,15 @@ What are your thoughts on BG3? What was your favorite moment?`,
             <div className="space-y-6">
               {mockComments.map((comment) => (
                 <div key={comment.id} className="flex gap-4">
-                  <Link href={`/profile/${comment.author.username}`} className="cursor-pointer">
+                  <Link
+                    href={`/profile/${comment.author.username}`}
+                    className="cursor-pointer"
+                  >
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={comment.author.avatar || "/placeholder.svg"} alt={comment.author.name} />
+                      <AvatarImage
+                        src={comment.author.avatar || "/placeholder.svg"}
+                        alt={comment.author.name}
+                      />
                       <AvatarFallback>{comment.author.name[0]}</AvatarFallback>
                     </Avatar>
                   </Link>
@@ -251,20 +308,36 @@ What are your thoughts on BG3? What was your favorite moment?`,
                         >
                           {comment.author.name}
                         </Link>
-                        <span className="text-xs text-gray-500">@{comment.author.username}</span>
+                        <span className="text-xs text-gray-500">
+                          @{comment.author.username}
+                        </span>
                         <span className="text-xs text-gray-500">•</span>
-                        <span className="text-xs text-gray-500">{comment.timestamp}</span>
+                        <span className="text-xs text-gray-500">
+                          {comment.timestamp}
+                        </span>
                       </div>
                       <p className="text-gray-300 text-sm">{comment.content}</p>
                     </div>
                     <div className="flex items-center gap-4 mt-2 ml-4">
                       <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-purple-400 cursor-pointer">
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 15l7-7 7 7"
+                          />
                         </svg>
                         {comment.upvotes}
                       </button>
-                      <button className="text-xs text-gray-500 hover:text-cyan-400 cursor-pointer">Reply</button>
+                      <button className="text-xs text-gray-500 hover:text-cyan-400 cursor-pointer">
+                        Reply
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -274,5 +347,5 @@ What are your thoughts on BG3? What was your favorite moment?`,
         </div>
       </div>
     </div>
-  )
+  );
 }

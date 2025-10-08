@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
+import { translateLastPlayed } from "@/lib/time-utils";
 
 interface GameCardProps {
   id: number;
@@ -9,7 +11,7 @@ interface GameCardProps {
   coverImage: string;
   playtime?: number;
   genres: string[];
-  lastPlayed?: string;
+  lastPlayed?: string | { type: string; count: number };
   className?: string;
 }
 
@@ -22,6 +24,7 @@ export function GameCard({
   lastPlayed,
   className,
 }: GameCardProps) {
+  const { t } = useTranslation();
   return (
     <Card
       className={`bg-gray-800 border-gray-700 overflow-hidden hover:border-purple-500 transition-all duration-300 hover:-translate-y-1 ${className}`}
@@ -29,7 +32,7 @@ export function GameCard({
       <Link href={`/games/${id}`} className="block">
         <div className="relative aspect-video">
           <Image
-            src={coverImage}
+            src={coverImage || "/default-game-cover.svg"}
             alt={title}
             fill
             className="object-cover"
@@ -75,7 +78,10 @@ export function GameCard({
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
-              <span>Last played {lastPlayed}</span>
+              <span>
+                {t("dashboard.gameCard.lastPlayed")}:{" "}
+                {translateLastPlayed(lastPlayed, t)}
+              </span>
             </div>
           )}
 

@@ -3,15 +3,18 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { NotificationsDropdown } from "@/components/navigation/notifications-dropdown";
 import { UserDropdown } from "@/components/navigation/user-dropdown";
 import { MobileMenu } from "@/components/navigation/mobile-menu";
+import { LanguageSelector } from "./navigation/language-selector";
 import { useAuth } from "@/hooks/use-auth";
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hasNotifications, setHasNotifications] = useState(true);
   const pathname = usePathname();
+  const { t } = useTranslation();
   const { isAuthenticated, fetchSession } = useAuth();
 
   useEffect(() => {
@@ -29,9 +32,9 @@ export function Navigation() {
   }, [fetchSession]);
 
   const navLinks = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/recommendations", label: "Recommendations" },
-    { href: "/settings", label: "Settings" },
+    { href: "/dashboard", label: t("navigation.dashboard") },
+    { href: "/recommendations", label: t("navigation.recommendations") },
+    { href: "/settings", label: t("navigation.settings") },
   ];
 
   const isActiveLink = (href: string) => pathname === href;
@@ -76,6 +79,7 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-3">
+            <LanguageSelector />
             <NotificationsDropdown hasNotifications={hasNotifications} />
             {isAuthenticated ? (
               <UserDropdown />
@@ -84,7 +88,7 @@ export function Navigation() {
                 href="/auth/steam"
                 className="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
               >
-                Sign in
+                {t("common.login")}
               </Link>
             )}
             <MobileMenu navLinks={navLinks} />

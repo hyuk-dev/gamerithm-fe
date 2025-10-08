@@ -8,10 +8,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Navigation } from "@/components/navigation";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { useGames } from "@/hooks/use-games";
 import { useAuth } from "@/hooks/use-auth";
 import { EmptyState } from "@/components/common";
 import { FILTER_GENRES, normalizeGenre } from "@/constants/genres";
+import { translateLastPlayed } from "@/lib/time-utils";
 // Mock game data
 const mockGames = [
   {
@@ -20,7 +22,7 @@ const mockGames = [
     coverImage: "/cyberpunk-2077-inspired-cover.png",
     playtime: 245,
     genres: ["RPG", "Action"],
-    lastPlayed: "2 days ago",
+    lastPlayed: { type: "days", count: 2 },
   },
   {
     id: 2,
@@ -28,7 +30,7 @@ const mockGames = [
     coverImage: "/counter-strike-2-game-cover.jpg",
     playtime: 1250,
     genres: ["FPS", "Multiplayer"],
-    lastPlayed: "1 day ago",
+    lastPlayed: { type: "days", count: 1 },
   },
   {
     id: 3,
@@ -36,7 +38,7 @@ const mockGames = [
     coverImage: "/baldurs-gate-3-inspired-cover.png",
     playtime: 180,
     genres: ["RPG", "Strategy"],
-    lastPlayed: "5 days ago",
+    lastPlayed: { type: "days", count: 5 },
   },
   {
     id: 4,
@@ -44,7 +46,7 @@ const mockGames = [
     coverImage: "/generic-fantasy-game-cover.png",
     playtime: 320,
     genres: ["RPG", "Action"],
-    lastPlayed: "1 week ago",
+    lastPlayed: { type: "days", count: 7 },
   },
   {
     id: 5,
@@ -52,7 +54,7 @@ const mockGames = [
     coverImage: "/valorant-game-cover.png",
     playtime: 890,
     genres: ["FPS", "Multiplayer"],
-    lastPlayed: "3 days ago",
+    lastPlayed: { type: "days", count: 3 },
   },
   {
     id: 6,
@@ -60,7 +62,7 @@ const mockGames = [
     coverImage: "/civilization-6-game-cover.jpg",
     playtime: 450,
     genres: ["Strategy", "Turn-Based"],
-    lastPlayed: "2 weeks ago",
+    lastPlayed: { type: "days", count: 14 },
   },
 ];
 
@@ -69,6 +71,8 @@ export default function DashboardPage() {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedPlaytime, setSelectedPlaytime] = useState<string[]>([]);
   const [showRecentlyPlayed, setShowRecentlyPlayed] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const { t } = useTranslation();
   const { games, isLoading: isGamesLoading, error, fetchGames } = useGames();
   const { isAuthenticated, isLoading: isAuthLoading, fetchSession } = useAuth();
 
@@ -96,15 +100,18 @@ export default function DashboardPage() {
       ? games.map((g, idx) => ({
           id: g.appid,
           title: g.name,
-          coverImage: g.coverImage || "/placeholder.svg",
+          coverImage: g.coverImage || "/default-game-cover.svg",
           playtime: g.playtime_hours,
           genres: g.genres,
-          lastPlayed: g.lastPlayed || "",
+          lastPlayed: (g.lastPlayed as { type: string; count: number }) || {
+            type: "noPlayRecord",
+            count: 0,
+          },
         }))
       : mockGames;
 
   const filteredGames = sourceGames.filter((game) => {
-    // 장르 필터링 - 한글 장르를 영어로 정규화하여 비교
+    // Genre filtering - normalize Korean genres to English for comparison
     if (selectedGenres.length > 0) {
       const gameNormalizedGenres = game.genres.map(normalizeGenre);
       const hasGenreMatch = selectedGenres.some((selectedGenre) =>
@@ -132,8 +139,32 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-[#0f0f23] text-white">
       <Navigation />
 
-      <div className="flex pt-16">
-        {/* Sidebar */}
+      <div className="flex flex-col lg:flex-row pt-16">
+        {/* Mobile Filter Toggle Button */}
+        <div className="lg:hidden fixed bottom-4 right-4 z-50">
+          <Button
+            onClick={() => setShowMobileFilters(!showMobileFilters)}
+            className="bg-purple-600 hover:bg-purple-700 rounded-full w-12 h-12 shadow-lg cursor-pointer"
+          >
+            <svg
+              className={`w-5 h-5 transition-transform duration-200 ${
+                showMobileFilters ? "rotate-180" : ""
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z"
+              />
+            </svg>
+          </Button>
+        </div>
+
+        {/* Sidebar - Desktop: fixed left, Mobile: toggle drawer */}
         <Sidebar
           selectedGenres={selectedGenres}
           setSelectedGenres={setSelectedGenres}
@@ -141,6 +172,8 @@ export default function DashboardPage() {
           setSelectedPlaytime={setSelectedPlaytime}
           showRecentlyPlayed={showRecentlyPlayed}
           setShowRecentlyPlayed={setShowRecentlyPlayed}
+          showMobileFilters={showMobileFilters}
+          setShowMobileFilters={setShowMobileFilters}
         />
 
         {/* Main Content */}
@@ -150,7 +183,7 @@ export default function DashboardPage() {
 
           {/* Games Grid */}
           <section className="mt-8">
-            <h2 className="text-2xl font-bold mb-6">Your Library</h2>
+            <h2 className="text-2xl font-bold mb-6">{t("dashboard.title")}</h2>
 
             {/* Show loading state */}
             {isLoading || isAuthLoading || isGamesLoading ? (
@@ -184,8 +217,8 @@ export default function DashboardPage() {
         </main>
       </div>
 
-      {/* Floating CTA Button */}
-      <FloatingCTA />
+      {/* Floating CTA Button - Hide when mobile filters are open */}
+      {/* <FloatingCTA showMobileFilters={showMobileFilters} /> */}
     </div>
   );
 }
@@ -197,6 +230,8 @@ function Sidebar({
   setSelectedPlaytime,
   showRecentlyPlayed,
   setShowRecentlyPlayed,
+  showMobileFilters,
+  setShowMobileFilters,
 }: {
   selectedGenres: string[];
   setSelectedGenres: (genres: string[]) => void;
@@ -204,7 +239,10 @@ function Sidebar({
   setSelectedPlaytime: (playtime: string[]) => void;
   showRecentlyPlayed: boolean;
   setShowRecentlyPlayed: (show: boolean) => void;
+  showMobileFilters: boolean;
+  setShowMobileFilters: (show: boolean) => void;
 }) {
+  const { t } = useTranslation();
   const playtimeRanges = ["0-10h", "10-50h", "50h+"];
 
   const toggleGenre = (genre: string) => {
@@ -223,76 +261,150 @@ function Sidebar({
     );
   };
 
+  const FilterContent = () => (
+    <div className="space-y-6 lg:space-y-8">
+      {/* Genre Filter */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4 text-purple-400">
+          {t("dashboard.filters.genre")}
+        </h3>
+        <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 lg:space-y-3 lg:gap-0">
+          {FILTER_GENRES.map((genre) => (
+            <div key={genre} className="flex items-center space-x-2">
+              <Checkbox
+                id={`genre-${genre}`}
+                checked={selectedGenres.includes(genre)}
+                onCheckedChange={() => toggleGenre(genre)}
+              />
+              <Label
+                htmlFor={`genre-${genre}`}
+                className="text-sm cursor-pointer text-gray-300"
+              >
+                {genre}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Playtime Filter */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4 text-cyan-400">
+          {t("dashboard.filters.playtime")}
+        </h3>
+        <div className="space-y-3">
+          {playtimeRanges.map((range) => (
+            <div key={range} className="flex items-center space-x-2">
+              <Checkbox
+                id={`playtime-${range}`}
+                checked={selectedPlaytime.includes(range)}
+                onCheckedChange={() => togglePlaytime(range)}
+              />
+              <Label
+                htmlFor={`playtime-${range}`}
+                className="text-sm cursor-pointer text-gray-300"
+              >
+                {range}
+              </Label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Recently Played */}
+      <div>
+        <h3 className="text-lg font-semibold mb-4 text-purple-400">
+          {t("dashboard.filters.recentlyPlayed")}
+        </h3>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="recently-played"
+            checked={showRecentlyPlayed}
+            onCheckedChange={(checked) =>
+              setShowRecentlyPlayed(checked as boolean)
+            }
+          />
+          <Label
+            htmlFor="recently-played"
+            className="text-sm cursor-pointer text-gray-300"
+          >
+            {t("dashboard.filters.showOnlyRecent")}
+          </Label>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <aside className="hidden lg:block w-64 bg-[#1a1a2e] border-r border-gray-800 p-6 h-[calc(100vh-64px)] overflow-y-auto">
-      <div className="space-y-8">
-        {/* Genre Filter */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4 text-purple-400">Genre</h3>
-          <div className="space-y-3">
-            {FILTER_GENRES.map((genre) => (
-              <div key={genre} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`genre-${genre}`}
-                  checked={selectedGenres.includes(genre)}
-                  onCheckedChange={() => toggleGenre(genre)}
-                />
-                <Label
-                  htmlFor={`genre-${genre}`}
-                  className="text-sm cursor-pointer text-gray-300"
-                >
-                  {genre}
-                </Label>
-              </div>
-            ))}
-          </div>
+    <>
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:block w-64 bg-[#1a1a2e] border-r border-gray-800 h-screen fixed left-0 top-[64px] overflow-y-auto z-40">
+        <div className="px-6 pt-4 pb-6">
+          <FilterContent />
         </div>
+      </aside>
 
-        {/* Playtime Filter */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4 text-cyan-400">Playtime</h3>
-          <div className="space-y-3">
-            {playtimeRanges.map((range) => (
-              <div key={range} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`playtime-${range}`}
-                  checked={selectedPlaytime.includes(range)}
-                  onCheckedChange={() => togglePlaytime(range)}
-                />
-                <Label
-                  htmlFor={`playtime-${range}`}
-                  className="text-sm cursor-pointer text-gray-300"
-                >
-                  {range}
-                </Label>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Mobile Filter Drawer */}
+      <div
+        className={`lg:hidden fixed inset-0 z-50 transition-all duration-300 ${
+          showMobileFilters ? "visible" : "invisible"
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
+            showMobileFilters ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={() => setShowMobileFilters(false)}
+        />
 
-        {/* Recently Played */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4 text-purple-400">
-            Recently Played
-          </h3>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="recently-played"
-              checked={showRecentlyPlayed}
-              onCheckedChange={(checked) =>
-                setShowRecentlyPlayed(checked as boolean)
-              }
-            />
-            <Label
-              htmlFor="recently-played"
-              className="text-sm cursor-pointer text-gray-300"
+        {/* Drawer */}
+        <div
+          className={`absolute bottom-0 left-0 right-0 bg-[#1a1a2e] rounded-t-2xl p-6 transform transition-transform duration-300 ${
+            showMobileFilters ? "translate-y-0" : "translate-y-full"
+          }`}
+          style={{ maxHeight: "80vh" }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-white">
+              {t("dashboard.filters.libraryFilters")}
+            </h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowMobileFilters(false)}
+              className="text-gray-400 hover:text-white"
             >
-              Show only recent
-            </Label>
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </Button>
+          </div>
+
+          {/* Filter Content */}
+          <div
+            className="overflow-y-auto"
+            style={{ maxHeight: "calc(80vh - 120px)" }}
+          >
+            <FilterContent />
           </div>
         </div>
       </div>
-    </aside>
+
+      {/* Desktop Spacer */}
+      <div className="hidden lg:block w-64 flex-shrink-0" />
+    </>
   );
 }
 
@@ -303,6 +415,7 @@ function StatsSection({
   games: any[];
   isAuthenticated: boolean;
 }) {
+  const { t } = useTranslation();
   // Calculate stats from actual game data
   const totalGames = games.length;
   const totalHours = games.reduce(
@@ -310,10 +423,10 @@ function StatsSection({
     0
   );
 
-  // Calculate most played genre (Unknown 제외)
+  // Calculate most played genre (excluding Unknown)
   const genreCounts = games.reduce((counts, game) => {
     game.genres?.forEach((genre: string) => {
-      // Unknown 장르는 제외하고 계산
+      // Exclude Unknown genre from calculation
       if (genre !== "Unknown") {
         counts[genre] = (counts[genre] || 0) + 1;
       }
@@ -326,6 +439,12 @@ function StatsSection({
       (count as number) > max.count ? { genre, count: count as number } : max,
     { genre: "N/A", count: 0 }
   ).genre;
+
+  // Translate genre to current language
+  const translateGenre = (genre: string) => {
+    if (genre === "N/A") return "N/A";
+    return t(`genres.${genre}`) || genre;
+  };
 
   const stats = [
     {
@@ -344,7 +463,7 @@ function StatsSection({
           />
         </svg>
       ),
-      label: "총 게임 수",
+      label: t("dashboard.stats.totalGames"),
       value: isAuthenticated ? totalGames.toLocaleString() : "0",
     },
     {
@@ -363,7 +482,7 @@ function StatsSection({
           />
         </svg>
       ),
-      label: "총 플레이 시간",
+      label: t("dashboard.stats.totalPlaytime"),
       value: isAuthenticated ? totalHours.toLocaleString() + "h" : "0h",
     },
     {
@@ -382,8 +501,8 @@ function StatsSection({
           />
         </svg>
       ),
-      label: "가장 많이 플레이한 장르",
-      value: isAuthenticated ? mostPlayedGenre : "N/A",
+      label: t("dashboard.stats.mostPlayedGenre"),
+      value: isAuthenticated ? translateGenre(mostPlayedGenre) : "N/A",
     },
   ];
 
@@ -407,7 +526,7 @@ function StatsSection({
   );
 }
 
-// fallback 커버 이미지 매핑 (클라이언트 사이드용)
+// Fallback cover image mapping (client-side)
 function getFallbackCoverImage(appId: number): string {
   const fallbackImages: Record<number, string> = {
     730: "/counter-strike-2-game-cover.jpg",
@@ -418,44 +537,44 @@ function getFallbackCoverImage(appId: number): string {
     289070: "/civilization-6-game-cover.jpg",
   };
 
-  return fallbackImages[appId] || "/placeholder.svg";
+  return fallbackImages[appId] || "/default-game-cover.svg";
 }
 
-// 커스텀 이미지 컴포넌트
+// Custom image component
 function GameImage({ game }: { game: (typeof mockGames)[0] }) {
   const [currentSrc, setCurrentSrc] = useState(
-    game.coverImage || "/placeholder.svg"
+    game.coverImage || "/default-game-cover.svg"
   );
   const [isIcon, setIsIcon] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [currentFallbackIndex, setCurrentFallbackIndex] = useState(0);
 
-  // 고화질 이미지 우선순위 리스트
+  // High quality image priority list
   const getHighQualityImageSequence = (appId: number) => [
-    `/api/steam/image/${appId}/library_hero`, // 가장 고화질
+    `/api/steam/image/${appId}/library_hero`, // Highest quality
     `/api/steam/image/${appId}/library`,
     `/api/steam/image/${appId}/header`,
     `/api/steam/image/${appId}/page_bg`,
-    `/api/steam/image/${appId}/capsule`, // 중간 해상도
+    `/api/steam/image/${appId}/capsule`, // Medium resolution
     `/api/steam/image/${appId}/small_capsule`,
     `/api/steam/image/${appId}/mini_capsule`,
   ];
 
   const handleError = () => {
-    if (hasError) return; // 이미 에러 상태면 중복 처리 방지
+    if (hasError) return; // Already in error state, prevent duplicate processing
 
     const appId = (game as any).appid || game.id;
     const highQualitySequence = getHighQualityImageSequence(appId);
 
-    // 원본 coverImage에서 시작하는 경우
+    // Starting from original coverImage
     if (currentSrc === game.coverImage) {
       setCurrentSrc(highQualitySequence[0]);
       setCurrentFallbackIndex(1);
       return;
     }
 
-    // 고화질 이미지 시퀀스에서 다음 이미지 시도
+    // Try next image from high quality sequence
     if (currentSrc.includes("/api/steam/image/")) {
       if (currentFallbackIndex < highQualitySequence.length) {
         setCurrentSrc(highQualitySequence[currentFallbackIndex]);
@@ -463,7 +582,7 @@ function GameImage({ game }: { game: (typeof mockGames)[0] }) {
         return;
       }
 
-      // 모든 고화질 이미지 실패 시 Steam 아이콘으로
+      // All high quality images failed, fallback to Steam icon
       setCurrentSrc(
         `https://media.steampowered.com/steamcommunity/public/images/apps/${appId}/${
           (game as any).img_icon_url || "icon"
@@ -473,15 +592,15 @@ function GameImage({ game }: { game: (typeof mockGames)[0] }) {
       return;
     }
 
-    // Steam 아이콘 실패 시 로컬 fallback
+    // Steam icon failed, fallback to local
     if (currentSrc.includes("steamcommunity/public/images/apps/")) {
       setCurrentSrc(getFallbackCoverImage(appId));
       setIsIcon(false);
       return;
     }
 
-    // 최종 fallback
-    setCurrentSrc("/placeholder.svg");
+    // Final fallback
+    setCurrentSrc("/default-game-cover.svg");
     setIsIcon(false);
     setHasError(true);
   };
@@ -490,7 +609,7 @@ function GameImage({ game }: { game: (typeof mockGames)[0] }) {
     setIsLoading(false);
   };
 
-  // 현재 이미지가 아이콘인지 확인
+  // Check if current image is icon
   useEffect(() => {
     const isIconImage =
       currentSrc.includes("steamcommunity/public/images/apps/") &&
@@ -499,9 +618,9 @@ function GameImage({ game }: { game: (typeof mockGames)[0] }) {
     setIsIcon(isIconImage);
   }, [currentSrc]);
 
-  // 컴포넌트 마운트 시 고화질 이미지부터 시도
+  // Try high quality images from component mount
   useEffect(() => {
-    if (game.coverImage && !game.coverImage.includes("/placeholder")) {
+    if (game.coverImage && !game.coverImage.includes("/default-game-cover")) {
       const appId = (game as any).appid || game.id;
       const highQualitySequence = getHighQualityImageSequence(appId);
       setCurrentSrc(highQualitySequence[0]);
@@ -536,6 +655,7 @@ function GameImage({ game }: { game: (typeof mockGames)[0] }) {
 function GameCard({ game }: { game: (typeof mockGames)[0] }) {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -555,7 +675,7 @@ function GameCard({ game }: { game: (typeof mockGames)[0] }) {
   }, []);
 
   const handleCardClick = () => {
-    // Steam Store URL로 새 탭에서 열기
+    // Open Steam Store URL in new tab
     const steamUrl = `https://store.steampowered.com/app/${game.id}`;
     window.open(steamUrl, "_blank", "noopener,noreferrer");
   };
@@ -579,11 +699,13 @@ function GameCard({ game }: { game: (typeof mockGames)[0] }) {
           <h3 className="text-lg font-bold text-white truncate">
             {game.title}
           </h3>
-          <p className="text-sm text-gray-400">{game.playtime} hours played</p>
+          <p className="text-sm text-gray-400">
+            {game.playtime} {t("dashboard.gameCard.hoursPlayed")}
+          </p>
           <div className="flex flex-wrap gap-2">
             {game.genres.slice(0, 3).map((genre) => {
               const normalizedGenre = normalizeGenre(genre);
-              // 주요 장르만 표시하고, Unknown이나 너무 세부적인 장르는 제외
+              // Display only major genres, exclude Unknown or overly specific genres
               if (
                 normalizedGenre === "Unknown" ||
                 normalizedGenre.includes("Steam") ||
@@ -604,13 +726,14 @@ function GameCard({ game }: { game: (typeof mockGames)[0] }) {
                   variant="secondary"
                   className="bg-purple-900/30 text-purple-300 hover:bg-purple-900/50"
                 >
-                  {normalizedGenre}
+                  {t(`genres.${normalizedGenre}`) || normalizedGenre}
                 </Badge>
               );
             })}
           </div>
           <p className="text-xs text-gray-500">
-            Last played: {game.lastPlayed}
+            {t("dashboard.gameCard.lastPlayed")}:{" "}
+            {translateLastPlayed(game.lastPlayed, t)}
           </p>
         </div>
       </Card>
@@ -635,16 +758,19 @@ function GameCardSkeleton() {
   );
 }
 
-function FloatingCTA() {
+function FloatingCTA({ showMobileFilters }: { showMobileFilters: boolean }) {
+  // Hide on mobile when filters are open, always show on desktop
+  if (showMobileFilters) return null;
+
   return (
-    <div className="fixed bottom-8 right-8 z-50">
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 sm:bottom-8 z-40">
       <Link href="/recommendations">
         <Button
-          size="lg"
-          className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white px-8 py-6 text-lg rounded-full shadow-2xl hover:scale-110 transition-all duration-300 animate-pulse cursor-pointer"
+          size="sm"
+          className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white px-3 py-2 sm:px-8 sm:py-6 text-sm sm:text-lg rounded-full shadow-2xl hover:scale-110 transition-all duration-300 animate-pulse cursor-pointer"
         >
           <svg
-            className="w-6 h-6 mr-2"
+            className="w-4 h-4 sm:w-6 sm:h-6 mr-1 sm:mr-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -656,7 +782,8 @@ function FloatingCTA() {
               d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
             />
           </svg>
-          Get AI Recommendations
+          <span className="hidden sm:inline">Get AI Recommendations</span>
+          <span className="sm:hidden">AI</span>
         </Button>
       </Link>
     </div>
